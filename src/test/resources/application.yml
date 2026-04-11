@@ -1,0 +1,10 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: spring-boot-demo-test
+
+logging:
+  level:
+    com.example.demo: DEBUG
