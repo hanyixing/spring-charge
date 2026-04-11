@@ -1,0 +1,16 @@
+target/
+build/
+*.md
+.git/
+.gitignore
+.idea/
+*.iml
+.DS_Store
+*.class
+*.log
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
