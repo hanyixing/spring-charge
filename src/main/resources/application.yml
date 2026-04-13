@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8082
 
 spring:
   application:
@@ -24,3 +24,8 @@ logging:
     com.example.demo: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+charge:
+  reward:
+    reward-rate-per-kwh: 0.5
+    reward-time-slots: 0,1,2,3,4,5,6,7,8,9,88,89,90,91,92,93,94,95
