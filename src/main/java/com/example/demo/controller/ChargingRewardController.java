@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -277,6 +278,86 @@ public class ChargingRewardController {
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("testDescription", "测试跨时间段和跨天充电场景");
+        response.put("rewardRatePerKwh", chargingRewardService.getRewardRatePerKwh());
+        response.put("testCases", testCases);
+        
+        return response;
+    }
+    
+    @GetMapping("/test/cross-multi-days")
+    public Map<String, Object> testCrossMultiDaysCharging() {
+        log.info("测试跨多天充电场景");
+        
+        String userId = "TEST_USER_MULTI_DAYS";
+        List<Map<String, Object>> testCases = new ArrayList<>();
+        
+        LocalDateTime startTime1 = LocalDateTime.of(2024, 1, 1, 23, 0);
+        LocalDateTime endTime1 = LocalDateTime.of(2024, 1, 4, 0, 0);
+        double power1 = 10.0;
+        ChargingSession session1 = chargingRewardService.calculateSessionReward(userId, startTime1, endTime1, power1);
+        List<SlotChargingDetail> details1 = chargingRewardService.calculateSlotDetails(startTime1, endTime1, power1);
+        
+        Map<String, Object> case1 = new HashMap<>();
+        case1.put("caseName", "跨3天充电（第1天23:00 - 第4天00:00）");
+        case1.put("startTime", startTime1.toString());
+        case1.put("endTime", endTime1.toString());
+        case1.put("chargingPowerKw", power1);
+        case1.put("totalHours", Duration.between(startTime1, endTime1).toHours());
+        case1.put("session", session1);
+        case1.put("slotDetailsCount", details1.size());
+        testCases.add(case1);
+        
+        LocalDateTime startTime2 = LocalDateTime.of(2024, 1, 1, 22, 0);
+        LocalDateTime endTime2 = LocalDateTime.of(2024, 1, 3, 8, 0);
+        double power2 = 15.0;
+        ChargingSession session2 = chargingRewardService.calculateSessionReward(userId, startTime2, endTime2, power2);
+        List<SlotChargingDetail> details2 = chargingRewardService.calculateSlotDetails(startTime2, endTime2, power2);
+        
+        Map<String, Object> case2 = new HashMap<>();
+        case2.put("caseName", "跨2天多时段充电（第1天22:00 - 第3天08:00）");
+        case2.put("startTime", startTime2.toString());
+        case2.put("endTime", endTime2.toString());
+        case2.put("chargingPowerKw", power2);
+        case2.put("totalHours", Duration.between(startTime2, endTime2).toHours());
+        case2.put("session", session2);
+        case2.put("slotDetailsCount", details2.size());
+        testCases.add(case2);
+        
+        LocalDateTime startTime3 = LocalDateTime.of(2024, 1, 1, 0, 0);
+        LocalDateTime endTime3 = LocalDateTime.of(2024, 1, 2, 0, 0);
+        double power3 = 20.0;
+        ChargingSession session3 = chargingRewardService.calculateSessionReward(userId, startTime3, endTime3, power3);
+        List<SlotChargingDetail> details3 = chargingRewardService.calculateSlotDetails(startTime3, endTime3, power3);
+        
+        Map<String, Object> case3 = new HashMap<>();
+        case3.put("caseName", "完整一天充电（第1天00:00 - 第2天00:00）");
+        case3.put("startTime", startTime3.toString());
+        case3.put("endTime", endTime3.toString());
+        case3.put("chargingPowerKw", power3);
+        case3.put("totalHours", Duration.between(startTime3, endTime3).toHours());
+        case3.put("session", session3);
+        case3.put("slotDetailsCount", details3.size());
+        testCases.add(case3);
+        
+        LocalDateTime startTime4 = LocalDateTime.of(2024, 1, 1, 18, 0);
+        LocalDateTime endTime4 = LocalDateTime.of(2024, 1, 2, 18, 0);
+        double power4 = 8.0;
+        ChargingSession session4 = chargingRewardService.calculateSessionReward(userId, startTime4, endTime4, power4);
+        List<SlotChargingDetail> details4 = chargingRewardService.calculateSlotDetails(startTime4, endTime4, power4);
+        
+        Map<String, Object> case4 = new HashMap<>();
+        case4.put("caseName", "跨天完整周期（第1天18:00 - 第2天18:00）");
+        case4.put("startTime", startTime4.toString());
+        case4.put("endTime", endTime4.toString());
+        case4.put("chargingPowerKw", power4);
+        case4.put("totalHours", Duration.between(startTime4, endTime4).toHours());
+        case4.put("session", session4);
+        case4.put("slotDetailsCount", details4.size());
+        testCases.add(case4);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("testDescription", "测试跨多天充电场景（跨2天、跨3天等）");
         response.put("rewardRatePerKwh", chargingRewardService.getRewardRatePerKwh());
         response.put("testCases", testCases);
         

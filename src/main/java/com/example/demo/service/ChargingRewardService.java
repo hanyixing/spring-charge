@@ -170,8 +170,7 @@ public class ChargingRewardService {
             int currentSlotIndex = getTimeSlotIndex(current);
             TimeSlotConfig config = timeSlotConfigs.get(currentSlotIndex);
             
-            LocalDateTime slotEnd = current.withHour(0).withMinute(0).withSecond(0)
-                    .plusMinutes((long) (currentSlotIndex + 1) * TimeSlotConfig.SLOT_DURATION_MINUTES);
+            LocalDateTime slotEnd = calculateSlotEndTime(current, currentSlotIndex);
             
             if (slotEnd.isAfter(endTime)) {
                 slotEnd = endTime;
@@ -198,6 +197,18 @@ public class ChargingRewardService {
         }
         
         return details;
+    }
+    
+    private LocalDateTime calculateSlotEndTime(LocalDateTime current, int slotIndex) {
+        int slotEndMinutes = (slotIndex + 1) * TimeSlotConfig.SLOT_DURATION_MINUTES;
+        
+        if (slotEndMinutes >= 24 * 60) {
+            return current.toLocalDate().plusDays(1).atTime(0, 0);
+        } else {
+            int slotEndHour = slotEndMinutes / 60;
+            int slotEndMinute = slotEndMinutes % 60;
+            return current.toLocalDate().atTime(slotEndHour, slotEndMinute);
+        }
     }
     
     public RewardResult calculateBatchRewards(String userId, List<ChargingRecord> chargingRecords) {
