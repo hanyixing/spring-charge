@@ -13,9 +13,9 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>spring-charge-bug-fix</artifactId>
     <version>1.0.0</version>
-    <name>Spring Boot Demo</name>
+    <name>Spring Charge Bug Fix</name>
     <description>Spring Boot基础项目</description>
 
     <properties>
@@ -59,7 +59,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Boot Actuator (健康检查) -->
+        <!-- Spring Boot Actuator (健康检�? -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

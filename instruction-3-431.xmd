@@ -1,0 +1,7 @@
+在充电奖励计算系统中，当充电时间跨越午夜时，会出现数组越界问题。
+
+问题描述
+在 calculateReward 方法中，当充电时间跨越午夜时，pointIndex 可能达到96（超出0-95的有效范围），导致 chargingPoints.get(pointIndex) 抛出数组越界异常。
+
+要求
+修复代码并做回归测试
